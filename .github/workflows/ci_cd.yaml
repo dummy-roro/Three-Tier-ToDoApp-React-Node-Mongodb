@@ -42,14 +42,6 @@ jobs:
           path: Application-Code/frontend/coverage/lcov.info
         continue-on-error: true
 
-      - name: Trivy File System Scan (SARIF)
-        uses: aquasecurity/trivy-action@master
-        with:
-          scan-type: 'fs'
-          scan-ref: 'Application-Code/frontend'
-          format: 'sarif'
-          output: 'trivy-frontend-fs.sarif'
-
       - name: Trivy File System Scan (HTML)
         uses: aquasecurity/trivy-action@master
         with:
@@ -65,13 +57,6 @@ jobs:
           scan-ref: 'Application-Code/frontend'
           format: 'table'
           output: 'trivy-frontend-fs.txt'
-
-      - name: Upload Trivy File Scan Results
-        uses: github/codeql-action/upload-sarif@v2
-        if: always()
-        with:
-          sarif_file: 'trivy-frontend-fs.sarif'
-          category: 'trivy-fs-frontend'
 
       - name: Trivy File System Scan (Fail on High/Critical)
         uses: aquasecurity/trivy-action@master
@@ -92,13 +77,6 @@ jobs:
           load: true
           tags: frontend:latest
 
-      - name: Trivy Image Scan (SARIF)
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: 'frontend:latest'
-          format: 'sarif'
-          output: 'trivy-frontend-image.sarif'
-
       - name: Trivy Image Scan (HTML)
         uses: aquasecurity/trivy-action@master
         with:
@@ -112,13 +90,6 @@ jobs:
           image-ref: 'frontend:latest'
           format: 'table'
           output: 'trivy-frontend-image.txt'
-
-      - name: Upload Trivy Image Scan Results
-        uses: github/codeql-action/upload-sarif@v2
-        if: always()
-        with:
-          sarif_file: 'trivy-frontend-image.sarif'
-          category: 'trivy-image-frontend'
 
       - name: Trivy Image Scan (Fail on High/Critical)
         uses: aquasecurity/trivy-action@master
@@ -180,14 +151,6 @@ jobs:
           path: Application-Code/backend/coverage/lcov.info
         continue-on-error: true
 
-      - name: Trivy File System Scan (SARIF)
-        uses: aquasecurity/trivy-action@master
-        with:
-          scan-type: 'fs'
-          scan-ref: 'Application-Code/backend'
-          format: 'sarif'
-          output: 'trivy-backend-fs.sarif'
-
       - name: Trivy File System Scan (HTML)
         uses: aquasecurity/trivy-action@master
         with:
@@ -203,13 +166,6 @@ jobs:
           scan-ref: 'Application-Code/backend'
           format: 'table'
           output: 'trivy-backend-fs.txt'
-
-      - name: Upload Trivy File Scan Results
-        uses: github/codeql-action/upload-sarif@v2
-        if: always()
-        with:
-          sarif_file: 'trivy-backend-fs.sarif'
-          category: 'trivy-fs-backend'
 
       - name: Trivy File System Scan (Fail on High/Critical)
         uses: aquasecurity/trivy-action@master
@@ -230,13 +186,6 @@ jobs:
           load: true
           tags: backend:latest
 
-      - name: Trivy Image Scan (SARIF)
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: 'backend:latest'
-          format: 'sarif'
-          output: 'trivy-backend-image.sarif'
-
       - name: Trivy Image Scan (HTML)
         uses: aquasecurity/trivy-action@master
         with:
@@ -250,13 +199,6 @@ jobs:
           image-ref: 'backend:latest'
           format: 'table'
           output: 'trivy-backend-image.txt'
-
-      - name: Upload Trivy Image Scan Results
-        uses: github/codeql-action/upload-sarif@v2
-        if: always()
-        with:
-          sarif_file: 'trivy-backend-image.sarif'
-          category: 'trivy-image-backend'
 
       - name: Trivy Image Scan (Fail on High/Critical)
         uses: aquasecurity/trivy-action@master
