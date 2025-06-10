@@ -53,7 +53,7 @@ jobs:
           output: 'trivy-frontend-fs.sarif'
 
       - name: Upload Trivy File Scan Results
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
         if: always()
         with:
           sarif_file: 'trivy-frontend-fs.sarif'
@@ -86,7 +86,7 @@ jobs:
           output: 'trivy-frontend-image.sarif'
 
       - name: Upload Trivy Image Scan Results
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
         if: always()
         with:
           sarif_file: 'trivy-frontend-image.sarif'
@@ -163,7 +163,7 @@ jobs:
           output: 'trivy-backend-fs.sarif'
 
       - name: Upload Trivy File Scan Results
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
         if: always()
         with:
           sarif_file: 'trivy-backend-fs.sarif'
@@ -196,7 +196,7 @@ jobs:
           output: 'trivy-backend-image.sarif'
 
       - name: Upload Trivy Image Scan Results
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
         if: always()
         with:
           sarif_file: 'trivy-backend-image.sarif'
