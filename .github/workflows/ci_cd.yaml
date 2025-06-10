@@ -104,6 +104,15 @@ jobs:
           exit-code: '0'
           severity: 'HIGH,CRITICAL'
 
+      - name: Upload Frontend Trivy Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-trivy-reports
+          path: |
+            trivy-frontend-*.html
+            trivy-frontend-*.txt
+            
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -183,6 +192,15 @@ jobs:
           format: 'table'
           exit-code: '0'
           severity: 'HIGH,CRITICAL'
+          
+      - name: Upload Backend Trivy Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-trivy-reports
+          path: |
+            trivy-backend-*.html
+            trivy-backend-*.txt
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
