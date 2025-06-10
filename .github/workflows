@@ -1,0 +1,114 @@
+name: Secure CI/CD Pipeline 
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  frontend:
+    name: Frontend CI/CD
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        working-directory: Application-Code/frontend
+        run: npm ci
+
+      - name: Audit Dependencies
+        working-directory: Application-Code/frontend
+        run: npm audit --audit-level=high
+
+      - name: Run Unit Tests + Coverage
+        working-directory: Application-Code/frontend
+        run: npm test -- --coverage
+
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-coverage
+          path: Application-Code/frontend/coverage/lcov.info
+
+      - name: OPA Policy Check
+        uses: open-policy-agent/opa-github-action@v2
+        with:
+          policy-path: ./opa/policy.rego
+          data-path: ./Application-Code/frontend
+          input-path: ./opa/input.json
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: Application-Code/frontend
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/frontend:${{ github.sha }}
+
+  backend:
+    name: Backend CI/CD
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        working-directory: Application-Code/backend
+        run: npm ci
+
+      - name: Audit Dependencies
+        working-directory: Application-Code/backend
+        run: npm audit --audit-level=high
+
+      - name: Run Unit Tests + Coverage
+        working-directory: Application-Code/backend
+        run: npm test -- --coverage
+
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-coverage
+          path: Application-Code/backend/coverage/lcov.info
+
+      - name: OPA Policy Check
+        uses: open-policy-agent/opa-github-action@v2
+        with:
+          policy-path: ./opa/policy.rego
+          data-path: ./Application-Code/backend
+          input-path: ./opa/input.json
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: Application-Code/backend
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/backend:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/backend:${{ github.sha }}
