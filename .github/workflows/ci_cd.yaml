@@ -57,6 +57,7 @@ jobs:
         if: always()
         with:
           sarif_file: 'trivy-frontend-fs.sarif'
+          category: 'trivy-fs-frontend'
 
       - name: Trivy File System Scan (Fail on High/Critical)
         uses: aquasecurity/trivy-action@master
@@ -89,6 +90,7 @@ jobs:
         if: always()
         with:
           sarif_file: 'trivy-frontend-image.sarif'
+          category: 'trivy-image-frontend'
 
       - name: Trivy Image Scan (Fail on High/Critical)
         uses: aquasecurity/trivy-action@master
@@ -165,6 +167,7 @@ jobs:
         if: always()
         with:
           sarif_file: 'trivy-backend-fs.sarif'
+          category: 'trivy-fs-backend'
 
       - name: Trivy File System Scan (Fail on High/Critical)
         uses: aquasecurity/trivy-action@master
@@ -197,6 +200,7 @@ jobs:
         if: always()
         with:
           sarif_file: 'trivy-backend-image.sarif'
+          category: 'trivy-image-backend'
 
       - name: Trivy Image Scan (Fail on High/Critical)
         uses: aquasecurity/trivy-action@master
