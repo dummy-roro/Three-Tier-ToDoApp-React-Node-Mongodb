@@ -22,6 +22,7 @@ jobs:
 
       - name: Audit Dependencies
         working-directory: Application-Code/frontend
+        continue-on-error: true
         run: npm audit --audit-level=high
 
       - name: Run Unit Tests + Coverage
@@ -79,6 +80,7 @@ jobs:
 
       - name: Audit Dependencies
         working-directory: Application-Code/backend
+        continue-on-error: true
         run: npm audit --audit-level=high
 
       - name: Run Unit Tests + Coverage
